@@ -1,16 +1,19 @@
 default: help
 
 .PHONY: fetch ## Fetches the nocodb dump from GCS.
-gsutil rsync -r gs://random.mccurdyc.dev/nocodb .
+fetch:
+	@gsutil rsync -r gs://random.mccurdyc.dev/nocodb nocodb/
 
 .PHONY: run ## Runs the nocodb docker container.
-docker run -d --name nocodb \
--v "$(pwd)"/nocodb:/usr/app/data/ \
--p 8080:8080 \
-nocodb/nocodb:latest
+run:
+	@docker run -d --name nocodb \
+		-v "$(shell pwd)"/nocodb:/usr/app/data/ \
+		-p 8080:8080 \
+		nocodb/nocodb:0.100.2
 
 .PHONY: dump ## Writes the nocodb db to GCS.
-gsutil rsync -d -r nocodb gs://random.mccurdyc.dev/nocodb
+dump:
+	@gsutil rsync -d -r nocodb gs://random.mccurdyc.dev/nocodb
 
 .PHONY: help
 help: ## Prints this help menu.
