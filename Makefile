@@ -6,10 +6,10 @@ fetch:
 
 .PHONY: run ## Runs the nocodb docker container.
 run:
-	@docker run -d --name nocodb \
+	@docker run --rm -d --name nocodb \
 		-v "$(shell pwd)"/nocodb:/usr/app/data/ \
 		-p 8080:8080 \
-		nocodb/nocodb:0.100.2
+		nocodb/nocodb:0.104.3
 
 .PHONY: dump ## Writes the nocodb db to GCS.
 dump:
